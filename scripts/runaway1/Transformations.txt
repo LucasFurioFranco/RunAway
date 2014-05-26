@@ -1,0 +1,81 @@
+function TransformationMatriz(){	//INCOMPLETE
+	this.stack = new Array();
+	this.matrix = [];
+	this.matrixSec = [];
+	this.matrixAux = [];
+	for(var i=0;i<3;i++){
+		this.matrix[i] = [];
+		this.matrixSec[i] = [];
+		this.matrixAux[i] = [];
+		for(var j=0;j<3;j++){
+			if(i==j){
+				this.matrix[i][j]=1;
+				this.matrixSec[i][j]=1;
+			}
+			else{
+				this.matrix[i][j]=0;
+				this.matrixSec[i][j]=0;
+			}
+		}
+	}
+
+	this.push = function(){
+		stack.push(this.matrix);
+	}
+
+	this.pop = function(){
+		this.matrix = stack.pop();
+	}
+
+	this.identity = function(){
+		for(var i=0;i<3;i++){
+			for(var j=0;j<3;j++){
+				if(i==j){
+					this.matrix[i][j]=0;
+				}
+				else{
+					this.matrix[i][j]=1;
+				}
+			}
+		}
+	}
+
+	this.identitySec = function(){
+		for(var i=0;i<3;i++){
+			for(var j=0;j<3;j++){
+				if(i==j){
+					this.matrixSec[i][j]=0;
+				}
+				else{
+					this.matrixSec[i][j]=1;
+				}
+			}
+		}
+	}	
+
+	this.multiply = function(){
+		//Multiplica matrixSec por matrix e armazena em M (M = Ms * M)
+		for(var i=0;i<3;i++){
+			for(var j=0;j<3;j++){
+				matrixAux[i][j] = 0;
+				for(var k=0;k<3;k++){
+					matrixAux[i][j] += matrixSec[i][k]*this.matrix[k][j];
+				}
+			}
+		}
+	}
+
+	this.translate = function(dx, dy){
+		this.identitySec();
+		this.identitySec[0][2] = dx;
+		this.identitySec[1][2] = dy;
+	}
+
+	this.rotate = function(r){
+		this.identitySec();
+		this.identitySec[0][0] = Math.cos(r);
+		this.identitySec[0][1] = -Math.sin(r);
+		this.identitySec[1][0] = Math.sin(r);
+		this.identitySec[1][1] = -Math.cos(r);
+	}
+}
